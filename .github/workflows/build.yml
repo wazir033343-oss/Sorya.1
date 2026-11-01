@@ -26,6 +26,14 @@ jobs:
         with:
           python-version: '3.11'
 
+      - name: Install Android SDK
+        uses: android-actions/setup-android@v3
+
+      - name: Accept licenses and install SDK tools
+        run: |
+          yes | sdkmanager --licenses || true
+          sdkmanager "platform-tools" "platforms;android-35" "build-tools;35.0.0"
+
       - name: Install system packages
         run: |
           sudo apt-get update
@@ -39,17 +47,11 @@ jobs:
           python -m pip install --upgrade pip
           pip install buildozer cython==0.29.36
 
-      - name: Accept Android SDK licenses
-        run: |
-          mkdir -p "$HOME/.buildozer/android/platform/android-sdk/licenses"
-          yes | buildozer android debug || true
-
       - name: Build APK
         run: |
-          set -o pipefail
-          yes | buildozer android debug
+          buildozer android debug
 
-      - name: Save APK
+      - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
           name: SORYA-APK
