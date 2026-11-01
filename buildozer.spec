@@ -16,6 +16,7 @@ orientation = portrait
 fullscreen = 0
 
 android.permissions = INTERNET
+android.accept_sdk_license = True
 android.api = 35
 android.minapi = 24
 android.archs = arm64-v8a
